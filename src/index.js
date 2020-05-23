@@ -1,17 +1,58 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+
+import reducers from './reducers';
+
+import App from './components/App';
+
+import {
+	reduxFirestore,
+	getFirestore,
+	createFirestoreInstance
+} from 'redux-firestore';
+import {
+	// reactReduxFirebase,
+	getFirebase,
+	ReactReduxFirebaseProvider
+} from 'react-redux-firebase';
+
+import firebaseConfig from './config/firebase';
+
+const rrfConfig = { userProfile: 'users' };
+
+//FIRESTORE
+// import Firebase, { FirebaseContext } from './components/oldfirebase';
+
+const initialState = {};
+
+const store = createStore(
+	reducers,
+	initialState,
+	compose(
+		//Den här applymiddlewarebiten är en sk store enhancer
+		applyMiddleware(
+			thunk.withExtraArgument({ getFirebase, getFirestore })
+		),
+		reduxFirestore(firebaseConfig)
+	)
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const rrfProps = {
+	firebase: firebaseConfig,
+	config: rrfConfig,
+	dispatch: store.dispatch,
+	createFirestoreInstance
+};
+
+ReactDOM.render(
+	<Provider store={store}>
+		<ReactReduxFirebaseProvider {...rrfProps}>
+			<App />
+		</ReactReduxFirebaseProvider>
+	</Provider>,
+	document.querySelector('#root')
+);

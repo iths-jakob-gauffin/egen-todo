@@ -1,0 +1,25 @@
+@import "./../styles/colors.scss";
+
+* {
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: $cream2;
+	background: linear-gradient(
+		135deg,
+		#e3f8f9,
+		#e3f8f9 10%,
+		#f0e0d1 50%,
+		#b5c1bd 95%
+	);
+}
+.container-app {
+	// background-color: slategray;
+	margin: 0 auto;
+	width: 80vw;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+}

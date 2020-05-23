@@ -1,0 +1,20 @@
+@import "./../styles/colors.scss";
+@import "./../styles/typography.scss";
+
+.header-todo {
+	opacity: .5;
+	margin: 2rem;
+	// height: 7vh;
+	background-color: $blue3;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: .3rem;
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 4rem;
+	color: $blue1;
+	padding-right: 2rem;
+}
