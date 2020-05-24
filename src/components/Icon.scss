@@ -1,0 +1,25 @@
+.same-hover {
+	display: flex;
+	justify-content: space-between;
+	margin: .5rem 0;
+
+	color: rgba(255, 255, 255, 0.6);
+	span {
+		color: rgba(255, 255, 255, 0.6);
+		a {
+			transition: all .2s ease-in;
+			margin-left: .3rem;
+			margin-right: .5rem;
+			text-decoration: none;
+			font-size: .8rem;
+			font-family: 'Raleway', sans-serif;
+			font-weight: 900;
+			letter-spacing: .1rem;
+			color: rgba(255, 255, 255, 0.6);
+		}
+	}
+
+	.hover {
+		color: rgba(255, 255, 255, 1);
+	}
+}

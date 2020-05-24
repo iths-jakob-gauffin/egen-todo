@@ -116,11 +116,12 @@ const Todo = props => {
 						<span
 							onClick={e => getStuffToFirebase(e)}
 							className="material-icons">
-							delete_forever
+							backup
 						</span>
 						{/* <span class="material-icons">
 							enhanced_encryption
 						</span> */}
+						<span class="material-icons">delete_forever</span>
 						<span className="material-icons">lock</span>
 					</nav>
 					{/* <button onClick={e => saveTodo(e)}>SAVE TODO</button> */}

@@ -24,9 +24,6 @@ import firebaseConfig from './config/firebase';
 
 const rrfConfig = { userProfile: 'users' };
 
-//FIRESTORE
-// import Firebase, { FirebaseContext } from './components/oldfirebase';
-
 const initialState = {};
 
 const store = createStore(

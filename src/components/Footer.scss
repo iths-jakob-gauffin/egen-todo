@@ -1,4 +1,8 @@
+@import "./../styles/colors.scss";
+
 footer {
-	background-color: lightblue;
-	height: 60%;
+	background-color: $blue3Op;
+	display: flex;
+	padding: 1rem;
+	justify-content: flex-start;
 }
