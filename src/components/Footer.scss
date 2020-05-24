@@ -1,8 +1,22 @@
 @import "./../styles/colors.scss";
 
-footer {
-	background-color: $blue3Op;
-	display: flex;
-	padding: 1rem;
-	justify-content: flex-start;
+.container-app .cut {
+	grid-area: 2 / 2 / 3 / 3;
+	height: 100%;
+	margin-top: 2rem;
+	margin-right: 2rem;
+	overflow: hidden;
+	footer {
+		background-color: $blue3Op;
+		height: 80%;
+		display: flex;
+		padding: 1rem;
+		justify-content: flex-start;
+		flex-direction: column;
+		transition: all .4s ease-in-out;
+		transform: translateX(0rem);
+	}
+	.overflow-hidden {
+		transform: translateX(7rem);
+	}
 }

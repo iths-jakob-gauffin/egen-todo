@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.scss';
 
 import { compose } from 'redux';
@@ -9,6 +9,8 @@ import { firestoreConnect } from 'react-redux-firebase';
 import TodoThumb from './TodoThumb';
 
 const Footer = props => {
+	const [ showThumbMenu, setShowThumbMenu ] = useState(false);
+
 	console.log('FOOTEROUTPUT ÄR: props', props);
 
 	let content = null;
@@ -28,15 +30,35 @@ const Footer = props => {
 		);
 	}
 	return (
-		<footer className="footer-todo">
-			{contentToTodoThumb}
-			{/* <TodoThumb
+		<div className="cut">
+			<footer
+				onMouseEnter={e => setShowThumbMenu(true)}
+				onMouseLeave={e => setShowThumbMenu(false)}
+				className={
+					showThumbMenu ? (
+						'footer-todo'
+					) : (
+						'footer-todo overflow-hidden'
+					)
+				}>
+				{contentToTodoThumb}
+				{/* <TodoThumb
 				text={contentToTodoThumb}
 				title={contentToTodoThumb}
 			/> */}
-			{/* <TodoThumb /> */}
-			<ul className="ul-saved-todos">{content}</ul>
-		</footer>
+				{/* <TodoThumb /> */}
+				<div
+					className={
+						showThumbMenu ? (
+							'footer-todo'
+						) : (
+							'footer-todo overflow-hidden'
+						)
+					}
+				/>
+				<ul className="ul-saved-todos">{content}</ul>
+			</footer>
+		</div>
 	);
 };
 

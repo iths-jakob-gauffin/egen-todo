@@ -13,6 +13,10 @@ import { somethingAsync } from './../actions/somethingAsync';
 const Todo = props => {
 	const [ menuToggle, setMenuToggle ] = useState(false);
 
+	const [ hoverTodo, setHoverTodo ] = useState(false);
+
+	const [ enlargeTodo, setEnlargeTodo ] = useState(false);
+
 	const saveTodo = () => {
 		let textInTodo = document.querySelector(`#textruta-${props.id}`)
 			.value;
@@ -40,6 +44,32 @@ const Todo = props => {
 		return;
 	};
 
+	const resizeTodo = () => {
+		// Enlarge todo scale 1.05  on hover if enlargeTodo is false
+		if (!hoverTodo) {
+			setHoverTodo(true);
+		} else if (hoverTodo && enlargeTodo) {
+			setHoverTodo(true);
+		} else if (!hoverTodo && !enlargeTodo) {
+			setHoverTodo(false);
+		} else if (hoverTodo && !enlargeTodo) {
+			setHoverTodo(false);
+		}
+		// if (!enlargeTodo) {
+		// 	setEnlargeTodo(true);
+		// } else if (hoverTodo) {
+		// 	setEnlargeTodo(true);
+		// } else {
+		// 	setEnlargeTodo(false);
+		// }
+	};
+	// const enlarge = () => {
+	// 	if(!enlargeTodo){
+
+	// 	}
+	// 	return;
+	// };
+
 	const toggleMenu = e => {
 		let id = e.target.closest('.card-todo').id;
 		console.log('OUTPUT ÄR: el', id);
@@ -63,10 +93,30 @@ const Todo = props => {
 	};
 
 	return (
-		<article className="card-todo" id={props.id}>
-			<div className="todo-container">
+		<article
+			className={hoverTodo ? 'card-todo hover-scale' : 'card-todo'}
+			id={props.id}
+			onMouseEnter={resizeTodo}
+			onMouseLeave={resizeTodo}>
+			<div
+				className={
+					enlargeTodo ? (
+						'todo-container enlarge'
+					) : (
+						'todo-container'
+					)
+				}>
 				<header>
-					<input type="text" placeholder="Rubrik" />
+					<input
+						type="text"
+						placeholder="Rubrik"
+						onFocus={() => setEnlargeTodo(true)}
+						// onBlur={resizeTodo}
+						onBlur={() => {
+							setEnlargeTodo(false);
+							setHoverTodo(false);
+						}}
+					/>
 					<nav>
 						<span
 							className="material-icons spin"
@@ -98,7 +148,13 @@ const Todo = props => {
 						name=""
 						id={`textruta-${props.id}`}
 						placeholder=" Write something"
-						onBlur={e => saveTodo(e)}
+						onFocus={() => setEnlargeTodo(true)}
+						// onBlur={resizeTodo}
+						onBlur={() => {
+							setEnlargeTodo(false);
+							setHoverTodo(false);
+						}}
+						// onBlur={e => saveTodo(e)}
 					/>
 				</main>
 				<footer className="footer-todo">

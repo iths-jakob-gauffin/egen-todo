@@ -2,8 +2,9 @@
 @import "./../styles/typography.scss";
 
 .header-todo {
+	grid-area: 1 / 1 / 2 / 3;
 	// opacity: .5;
-	margin: 2rem;
+	margin: 2rem 2rem 0 2rem;
 	// height: 7vh;
 	background-color: $blue3Op;
 	display: flex;

@@ -20,6 +20,11 @@ body {
 	margin: 0 auto;
 	width: 80vw;
 	height: 100vh;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 2.5fr 1fr;
+	grid-template-rows: 1fr 4fr;
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	// display: flex;
+	// flex-direction: column;
 }

@@ -7,19 +7,21 @@ main {
 	position: relative;
 }
 .card-todo {
+	position: relative;
 	// background-color: tan;
 	// position: absolute;
-	min-width: 35rem;
-	max-width: 45rem;
+	// min-width: 35rem;
+	width: 30rem;
 	height: 400px;
 	display: flex;
 	flex-direction: column;
-	margin: 2rem auto;
+	margin: 1.2rem auto 4rem .3rem;
 	padding: .7rem 1rem 2rem 1rem;
 	transition: all .3s ease-out;
-	&:hover {
-		transform: scale(1.05);
-	}
+	// &:hover {
+	// 	transform: scale(1.05);
+	// }
+
 	.todo-container {
 		position: relative;
 		display: flex;
@@ -30,6 +32,7 @@ main {
 		height: 100%;
 		width: 100%;
 		border-bottom-right-radius: 10px;
+		// transition: all 2s ease-in;
 
 		-webkit-box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.24);
 		-moz-box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.24);
@@ -42,6 +45,15 @@ main {
 			box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.44);
 		}
 	}
+	.enlarge {
+		// transition: all 2s ease-in;
+		width: 31rem;
+		height: 450px;
+		position: absolute;
+	}
+}
+.hover-scale {
+	transform: scale(1.05);
 }
 
 @keyframes spinAnimation {
@@ -103,7 +115,10 @@ main {
 		resize: none;
 		width: 100%;
 		font-size: 1.2rem;
-
+		scrollbar-width: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 		&::placeholder {
 			margin: 1rem;
 		}
@@ -122,7 +137,7 @@ main {
 .card-todo footer {
 	padding: 1rem 1rem 1.5rem;
 	// opacity: .5;
-	height: 24%;
+	height: 4rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
