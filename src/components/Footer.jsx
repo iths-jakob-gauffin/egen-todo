@@ -16,11 +16,15 @@ const Footer = props => {
 	let content = null;
 	let contentToTodoThumb = null;
 	if (props.firestoreStuff) {
-		let { text, title } = props.firestoreStuff[4];
-		console.log('OUTPUT ÄR: toThumb', text);
+		// DETTA FUNKADE FÖRUT PÅ EN TODO
+		// let { text, title } = props.firestoreStuff[3];
+		// console.log('OUTPUT ÄR: toThumb', text);
+		// contentToTodoThumb = <TodoThumb text={text} title={title} />;
+		contentToTodoThumb = props.firestoreStuff.map(todo => {
+			return <TodoThumb text={todo.text} title={todo.title} />;
+		});
 
-		// contentToTodoThumb = { text, title };
-		contentToTodoThumb = <TodoThumb text={text} title={title} />;
+		// contentToTodoThumb = props.firestoreStuff.map
 		// content = props.firestoreStuff.map(todo => {
 		// 	return <li>{todo.authorFirstName}</li>;
 		// });

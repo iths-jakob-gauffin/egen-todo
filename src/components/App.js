@@ -4,6 +4,8 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 
+import Spring1 from './Spring1';
+
 // CSS
 import './App.scss';
 
@@ -16,6 +18,7 @@ const App = () => {
 	};
 
 	return (
+		// <Spring1 />
 		<div className="container-app">
 			<Header
 				setNumberOfTodos={setNumberOfTodos}

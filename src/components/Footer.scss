@@ -2,10 +2,13 @@
 
 .container-app .cut {
 	grid-area: 2 / 2 / 3 / 3;
-	height: 100%;
 	margin-top: 2rem;
 	margin-right: 2rem;
 	overflow: hidden;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 	footer {
 		background-color: $blue3Op;
 		height: 80%;
@@ -15,6 +18,11 @@
 		flex-direction: column;
 		transition: all .4s ease-in-out;
 		transform: translateX(0rem);
+		overflow-y: scroll;
+		scrollbar-width: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 	.overflow-hidden {
 		transform: translateX(7rem);

@@ -1,0 +1,24 @@
+.spring-container {
+	// background-color: lightcoral;
+	// height: 100vh;
+	display: flex;
+	justify-content: center;
+	.comp {
+		// width: 60%;
+		background-color: lightgrey;
+		// height: 50%;
+	}
+}
+
+.hej-style {
+	background-color: lightgreen;
+	height: 10rem;
+	h1 {
+		color: black;
+	}
+}
+
+button {
+	width: 5rem;
+	height: 3rem;
+}

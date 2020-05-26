@@ -8,15 +8,14 @@ import { connect } from 'react-redux';
 
 // import { db } from '../config/firebase';
 
-import { somethingAsync } from './../actions/somethingAsync';
+import { somethingAsync } from '../actions/somethingAsync';
 
-import { useSpring, animated, config } from 'react-spring';
+import { useSpring, animated } from 'react-spring';
 
 const Todo = props => {
 	const [ menuToggle, setMenuToggle ] = useState(false);
 
 	const [ hoverTodo, setHoverTodo ] = useState(false);
-	console.log('OUTPUT ÄR: hoverTodo', hoverTodo);
 
 	const [ enlargeTodo, setEnlargeTodo ] = useState(false);
 
@@ -121,36 +120,17 @@ const Todo = props => {
 	const fade = useSpring({
 		from: {
 			opacity: 0,
-			scale: '10%',
-			// width: '5rem',
-			// height: '5rem',
-			scale: hoverTodo ? '100%' : '100%',
-			translate3d: '(-100%, 0, 0)'
-			// boxShadow: '10px 10px 24px -7px rgba(0, 0, 0, 0.24)'
+			scale: 1
 		},
 		to: {
 			opacity: 1,
-			// width: '25rem',
-			// height: '25rem',
-			scale: '100%',
-			scale: hoverTodo ? '110%' : '100%',
-			translate3d: '(0, -50%, 0)'
-			// boxShadow: '10px 10px 24px -7px rgba(0, 0, 0, 0.44)'
-		},
-		config: config.wobble,
-		delay: 100
-	});
-
-	const hover = useSpring({
-		scale: hoverTodo ? '110%' : '100%',
-		config: config.gentle
+			scale: 1.05
+		}
 	});
 
 	const enlargeAnimation = useSpring({
 		width: enlargeTodo ? '30rem' : '25rem',
-		height: enlargeTodo ? '28rem' : '25rem',
-		position: enlargeTodo ? 'absolute' : 'relative',
-		config: config.wobble
+		height: enlargeTodo ? '30rem' : '25rem'
 	});
 
 	return (
