@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Footer.scss';
 
 import { compose } from 'redux';
@@ -10,31 +10,117 @@ import TodoThumb from './TodoThumb';
 
 const Footer = props => {
 	const [ showThumbMenu, setShowThumbMenu ] = useState(false);
-
-	console.log('FOOTEROUTPUT ÄR: props', props);
-
-	let content = null;
+	const [ content, setContent ] = useState(null);
+	// let containerForTodoThumb = useRef(null);
+	let todoList = null;
 	let contentToTodoThumb = null;
-	if (props.firestoreStuff) {
-		// DETTA FUNKADE FÖRUT PÅ EN TODO
-		// let { text, title } = props.firestoreStuff[3];
-		// console.log('OUTPUT ÄR: toThumb', text);
-		// contentToTodoThumb = <TodoThumb text={text} title={title} />;
-		contentToTodoThumb = props.firestoreStuff.map(todo => {
-			return <TodoThumb text={todo.text} title={todo.title} />;
-		});
 
-		// contentToTodoThumb = props.firestoreStuff.map
-		// content = props.firestoreStuff.map(todo => {
-		// 	return <li>{todo.authorFirstName}</li>;
-		// });
-		console.log(
-			'OUTPUT ÄR: contentToTodoThumb',
-			contentToTodoThumb.title
-		);
-	}
+	// console.log('OUTPUT ÄR: props', props);
+
+	// // useEffect(() => {
+	// const doCoolStuff = () => {
+	// 	if (props.firestoreStuff) {
+	// 		// setContent(contentToTodoThumb);
+	// 		contentToTodoThumb = props.firestoreStuff.map(todo => {
+	// 			return (
+	// 				<TodoThumb
+	// 					key={todo.id}
+	// 					text={todo.text}
+	// 					title={todo.title}
+	// 				/>
+	// 			);
+	// 		});
+	// 		return contentToTodoThumb;
+	// 	}
+	// };
+
+	useEffect(
+		() => {
+			if (props.firestoreStuff) {
+				let writeCopy = [ ...props.firestoreStuff ];
+				let sortedTodoThumbLIst = writeCopy.sort(
+					(a, b) => b.createdAt - a.createdAt
+				);
+				// console.log('OUTPUT ÄR: sorted', sortedTodoThumbLIst);
+				contentToTodoThumb = sortedTodoThumbLIst.map(todo => {
+					return (
+						<TodoThumb
+							key={todo.id}
+							id={todo.id}
+							text={todo.text}
+							title={todo.title}
+							createdAt={todo.createdAt}
+							setDoEditTodoId={props.setDoEditTodoId}
+						/>
+					);
+				});
+				setContent(contentToTodoThumb);
+			}
+			// let grej = doCoolStuff();
+			// console.log('OUTPUT ÄR: grej', grej);
+			// setContent(grej);
+		},
+		[ props.firestoreStuff ]
+	);
+
+	// setContent();
+	// });
+
+	// async () => {
+	// 	contentToTodoThumb = props.firestoreStuff.map(todo => {
+	// 		return (
+	// 			<TodoThumb
+	// 				key={todo.id}
+	// 				text={todo.text}
+	// 				title={todo.title}
+	// 			/>
+	// 		);
+	// 	});
+	// 	console.log('OUTPUT ÄR: contentToTodoThumb', contentToTodoThumb);
+	// 	setContent(contentToTodoThumb);
+	// };
+
+	// useEffect(
+	// 	() => {
+	// 		async function doStuff() {
+	// 			await props.firestoreStuff.map(todo => {
+	// 				console.log(todo);
+	// 				contentToTodoThumb = (
+	// 					<TodoThumb
+	// 						key={todo.id}
+	// 						text={todo.text}
+	// 						title={todo.title}
+	// 					/>
+	// 				);
+	// 				setContent({ ...content, contentToTodoThumb });
+	// 				// return (
+
+	// 				// );
+	// 			});
+	// 		}
+
+	// 		// getContent();
+	// 		// async () => {
+	// 		// 	contentToTodoThumb = props.firestoreStuff.map(todo => {
+	// 		// return (
+	// 		// 	<TodoThumb
+	// 		// 		key={todo.id}
+	// 		// 		text={todo.text}
+	// 		// 		title={todo.title}
+	// 		// 	/>
+	// 		// );
+	// 		// 	});
+	// 		// 	console.log(
+	// 		// 		'OUTPUT ÄR: contentToTodoThumb',
+	// 		// 		contentToTodoThumb
+	// 		// 	);
+	// 		// 	setContent(contentToTodoThumb);
+	// 	}
+	// 	// [ props.firestoreStuff ]
+	// );
 	return (
 		<div className="cut">
+			{/* {console.log('renderar')} */}
 			<footer
 				onMouseEnter={e => setShowThumbMenu(true)}
 				onMouseLeave={e => setShowThumbMenu(false)}
@@ -45,12 +131,8 @@ const Footer = props => {
 						'footer-todo overflow-hidden'
 					)
 				}>
-				{contentToTodoThumb}
-				{/* <TodoThumb
-				text={contentToTodoThumb}
-				title={contentToTodoThumb}
-			/> */}
-				{/* <TodoThumb /> */}
+				{/* {contentToTodoThumb} */}
+				{content}
 				<div
 					className={
 						showThumbMenu ? (
@@ -60,16 +142,15 @@ const Footer = props => {
 						)
 					}
 				/>
-				<ul className="ul-saved-todos">{content}</ul>
+				<ul className="ul-saved-todos">{todoList}</ul>
 			</footer>
 		</div>
 	);
 };
 
-console.log(firestoreConnect);
-
 const mapStateToProps = state => {
-	// console.log('FOOTERN OUTPUT ÄR: state', state.firestore.ordered);
+	// console.log('OUTPUT ÄR: state', state);
+
 	return {
 		firestoreStuff: state.firestore.ordered.todotexter
 	};

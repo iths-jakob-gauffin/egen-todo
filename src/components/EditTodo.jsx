@@ -4,11 +4,13 @@ import './Todo.scss';
 
 import { connect } from 'react-redux';
 
-import { somethingAsync } from './../actions/somethingAsync';
+import { somethingAsync } from '../actions/somethingAsync';
 
 import { useSpring, animated, config } from 'react-spring';
 
-const Todo = props => {
+const EditTodo = props => {
+	console.log('EDITTODO OUTPUT ÄR: props', props.dataOfTodoToBeEdited);
+
 	const [ menuToggle, setMenuToggle ] = useState(false);
 
 	const [ hoverTodo, setHoverTodo ] = useState(false);
@@ -142,6 +144,7 @@ const Todo = props => {
 								...todoText,
 								title: e.target.value
 							})}
+						value={props.dataOfTodoToBeEdited.title}
 					/>
 					<nav>
 						<span
@@ -195,6 +198,7 @@ const Todo = props => {
 								text: e.target.value,
 								todoId: props.id
 							})}
+						value={props.dataOfTodoToBeEdited.text}
 					/>
 				</main>
 				<footer className="footer-todo">
@@ -243,4 +247,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(Todo);
+export default connect(null, mapDispatchToProps)(EditTodo);

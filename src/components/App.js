@@ -4,13 +4,28 @@ import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 
-import Spring1 from './Spring1';
+// import Spring1 from './Spring1';
 
-// CSS
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { firestoreConnect } from 'react-redux-firebase';
+
+// SCSS
 import './App.scss';
 
-const App = () => {
+const App = props => {
 	const [ numberOfTodos, setNumberOfTodos ] = useState([ 1 ]);
+
+	const [ doEditTodoId, setDoEditTodoId ] = useState(false);
+	console.log('OUTPUT ÄR: props', props);
+	console.log('OUTPUT ÄR: doEditTodoId', doEditTodoId);
+	let editTodo = null;
+	if (doEditTodoId) {
+		editTodo = props.firestoreInApp.filter(
+			todo => todo.id === doEditTodoId
+		);
+		console.log('OUTPUT ÄR: editTodo', editTodo);
+	}
 
 	const newTodo = () => {
 		let newTodo = { stuff: 'text o sånt' };
@@ -29,10 +44,22 @@ const App = () => {
 				numberOfTodos={numberOfTodos}
 				setNumberOfTodos={setNumberOfTodos}
 				newTodo={newTodo}
+				editTodo={editTodo ? editTodo[0] : null}
 			/>
-			<Footer />
+			<Footer setDoEditTodoId={setDoEditTodoId} />
 		</div>
 	);
 };
 
-export default App;
+const mapStateToProps = state => {
+	console.log('OUTPUT ÄR: state', state);
+	return {
+		stateInApp: state,
+		firestoreInApp: state.firestore.ordered.todotexter
+	};
+};
+
+export default compose(
+	connect(mapStateToProps),
+	firestoreConnect([ { collection: 'todotexter' } ])
+)(App);

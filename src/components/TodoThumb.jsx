@@ -1,40 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './TodoThumb.scss';
 
 import { connect } from 'react-redux';
-
-// import { saveText } from '../actions';
-
-// import { db } from '../config/firebase';
 
 import { somethingAsync } from '../actions/somethingAsync';
 
 import Icon from './Icon';
 
 const TodoThumb = props => {
-	console.log('OUTPUT ÄR: TodoThumb -> props', props);
+	// console.log('TUMMEN OUTPUT ÄR: props', props);
 	const [ thumbMenuToggle, setThumbMenuToggle ] = useState(false);
 
 	let elsestuff = 'HEJE';
-	const toggleThumbMenu = (() => {
-		let thumbMenuDOM = document.querySelector('.thumb-menu');
-		if (thumbMenuToggle) {
-			thumbMenuDOM.classList.add('hide-thumb-menu');
-		} else {
-			// thumbMenuDOM.classList.add('hide-thumb-menu');
-			// document
-			// 	.querySelector('.thumb-menu')
-			// 	.classList.add('hide-thumb-menu');
-		}
-	})();
+
+	useEffect(
+		() => {
+			// console.log('propppppps', props);
+			// let tid = new Date(
+			// 	state.firestore.status.ordered.todotexter.createdAt
+			// 		.seconds * 1000
+			// ).toLocaleDateString('en-US');
+			// console.log('OUTPUT ÄR: tid', tid);
+		},
+		[ props.thumbState ]
+	);
 
 	const truncate = text => {
-		console.log('OUTPUT ÄR: text', text);
-
-		// let breadText = props.title ? props.title : elsestuff;
 		let truncatedText = text.split('').splice(0, 60).join('');
-		console.log('OUTPUT ÄR: truncatedText', truncatedText);
 		return truncatedText + '...';
 	};
 
@@ -43,7 +36,6 @@ const TodoThumb = props => {
 			className="card-todo-thumb"
 			id={props.id}
 			onMouseLeave={e => setThumbMenuToggle(false)}>
-			{/* <div className="todo-container"> */}
 			<header
 				onMouseEnter={e =>
 					!thumbMenuToggle ? setThumbMenuToggle(true) : null}>
@@ -62,11 +54,9 @@ const TodoThumb = props => {
 					<Icon
 						icon={'photo_size_select_small'}
 						iconText={'ENLARGE'}
+						actionFunction={props.setDoEditTodoId}
 					/>
-					{/* <span class="material-icons">delete_forever</span> */}
 				</nav>
-				{/* <button onClick={e => saveTodo(e)}>SAVE TODO</button> */}
-				{/* <h4>Jakob</h4> */}
 			</aside>
 			<main
 				onMouseEnter={e =>
@@ -75,7 +65,6 @@ const TodoThumb = props => {
 					<p>{truncate(props.text ? props.text : elsestuff)}</p>
 				</article>
 			</main>
-			{/* </div> */}
 		</article>
 	);
 };
@@ -95,4 +84,13 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(TodoThumb);
+const mapStateToProps = state => {
+	// console.log('SATTET', state);
+
+	return {
+		thumbState: state.firestore.status.ordered
+		// tid: tid
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoThumb);

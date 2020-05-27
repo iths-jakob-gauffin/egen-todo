@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 
 import './Icon.scss';
 
-const Icon = ({ icon, iconText }) => {
+const Icon = ({ icon, iconText, actionFunction }) => {
 	const [ hover, setHover ] = useState(false);
+
+	const editTodo = e => {
+		let targetId = e.target.closest('.card-todo-thumb').id;
+		actionFunction(targetId);
+	};
 
 	return (
 		<div
+			onClick={e => editTodo(e)}
 			onMouseEnter={e => setHover(true)}
 			className="same-hover"
 			onMouseLeave={e => setHover(false)}>
@@ -15,9 +21,9 @@ const Icon = ({ icon, iconText }) => {
 					hover ? 'material-icons hover' : 'material-icons'
 				}>
 				{icon}
-				<a href="" className={hover ? 'hover' : null}>
+				<button className={hover ? 'hover' : null}>
 					{iconText}
-				</a>
+				</button>
 			</span>
 		</div>
 	);
