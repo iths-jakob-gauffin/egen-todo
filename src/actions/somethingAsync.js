@@ -1,20 +1,27 @@
 export const somethingAsync = textObj => {
-	// console.log('OUTPUT ÄR: textObj', textObj);
+	console.log('OUTPUT ÄR: textObj', textObj);
 	return async (dispatch, getState, { getFirebase, getFirestore }) => {
 		// make async call to database
 		try {
 			// ger oss en referens till vår firestore-db
 			const firestore = getFirestore();
 			const timestamp = firestore.FieldValue.serverTimestamp();
-			console.log('OUTPUT ÄR: timestamp', timestamp);
+
 			let textObjWithTimeStamp = {
 				...textObj,
 				createdAt: timestamp
 			};
-
-			await firestore
-				.collection('todotexter')
-				.add(textObjWithTimeStamp);
+			if (textObj.todoId === 'edit') {
+				await firestore
+					.collection('todotexter')
+					.doc(textObj.id)
+					.update(textObjWithTimeStamp);
+				// .add(textObjWithTimeStamp);
+			} else {
+				await firestore
+					.collection('todotexter')
+					.add(textObjWithTimeStamp);
+			}
 			// let idFromFirestore = await firestore
 			// 	.collection('todotexter')
 			// 	// .doc()

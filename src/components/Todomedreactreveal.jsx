@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './Todo.scss';
 
@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { somethingAsync } from '../actions/somethingAsync';
 
 import { useSpring, animated, config } from 'react-spring';
+
+import Fade from 'react-reveal/Fade';
 
 const Todo = props => {
 	const [ menuToggle, setMenuToggle ] = useState(false);
@@ -20,6 +22,8 @@ const Todo = props => {
 		text: 'No text',
 		todoId: 'x'
 	});
+
+	const [ temp, setTemp ] = useState(false);
 
 	const saveTodo = () => {
 		let textInTodo = document.querySelector(`#textruta-${props.id}`)
@@ -78,6 +82,15 @@ const Todo = props => {
 		}
 	};
 
+	useEffect(() => {
+		console.log('HEJ');
+		let interval = setInterval(() => {
+			setTemp(!temp);
+			console.log('TEMPEN ÄR', temp);
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
 	//animations
 	const fade = useSpring({
 		from: {
@@ -103,31 +116,6 @@ const Todo = props => {
 		config: config.wobble,
 		delay: 100
 	});
-	// FUNKADE
-	// const fade = useSpring({
-	// 	from: {
-	// 		opacity: 0,
-	// 		// scale: '10%',
-	// 		// width: '0rem',
-	// 		height: '0rem',
-	// 		scale: hoverTodo ? '100%' : '100%',
-	// 		// transform: 'translate3d(0, -100%, 0), scale(0.5, 0.5)'
-	// 		transform: 'scale(0.1, 0.1) translate3d(-100%, 0%, 0)'
-	// 		// boxShadow: '10px 10px 24px -7px rgba(0, 0, 0, 0.24)'
-	// 	},
-	// 	to: {
-	// 		opacity: 1,
-	// 		width: '25rem',
-	// 		height: '25rem',
-	// 		// scale: '100%',
-	// 		scale: hoverTodo ? '110%' : '100%',
-	// 		// transform: 'translate3d(0, 0, 0), scale(0.5, 0.5)'
-	// 		transform: 'scale(1, 1) translate3d(0, 0, 0)'
-	// 		// boxShadow: '10px 10px 24px -7px rgba(0, 0, 0, 0.44)'
-	// 	},
-	// 	config: config.wobble,
-	// 	delay: 100
-	// });
 
 	// const hover = useSpring({
 	// 	scale: hoverTodo ? '110%' : '100%',
@@ -142,112 +130,124 @@ const Todo = props => {
 	});
 
 	return (
-		<animated.article
-			style={fade}
-			className={hoverTodo ? 'card-todo hover-scale' : 'card-todo'}
-			id={props.id}
-			onMouseEnter={resizeTodo}
-			onMouseLeave={resizeTodo}>
-			<animated.div
-				style={enlargeAnimation}
-				className={
-					enlargeTodo ? 'todo-container' : 'todo-container'
-				}>
-				<header>
-					<input
-						type="text"
-						placeholder="Rubrik"
-						onFocus={() => setEnlargeTodo(true)}
-						onBlur={() => {
-							setEnlargeTodo(false);
-							setHoverTodo(false);
-						}}
-						onChange={e =>
-							setTodoText({
-								...todoText,
-								title: e.target.value
-							})}
-					/>
-					<nav>
-						<span
-							className="material-icons spin"
-							onClick={e => toggleMenu(e)}>
-							settings
-						</span>
-					</nav>
-				</header>
-				<div
+		<div>
+			<Fade top opposite when={temp}>
+				<animated.article
+					style={fade}
 					className={
-						menuToggle ? (
-							'slide-container dark-background'
-						) : (
-							'slide-container hide'
-						)
-					}>
-					<nav className="slide-nav">
+						hoverTodo ? 'card-todo hover-scale' : 'card-todo'
+					}
+					id={props.id}
+					onMouseEnter={resizeTodo}
+					onMouseLeave={resizeTodo}>
+					<animated.div
+						style={enlargeAnimation}
+						className={
+							enlargeTodo ? (
+								'todo-container'
+							) : (
+								'todo-container'
+							)
+						}>
+						<header>
+							<input
+								type="text"
+								placeholder="Rubrik"
+								onFocus={() => setEnlargeTodo(true)}
+								onBlur={() => {
+									setEnlargeTodo(false);
+									setHoverTodo(false);
+								}}
+								onChange={e =>
+									setTodoText({
+										...todoText,
+										title: e.target.value
+									})}
+							/>
+							<nav>
+								<span
+									className="material-icons spin"
+									onClick={e => toggleMenu(e)}>
+									settings
+								</span>
+							</nav>
+						</header>
 						<div
 							className={
-								menuToggle ? 'inner open' : 'inner'
+								menuToggle ? (
+									'slide-container dark-background'
+								) : (
+									'slide-container hide'
+								)
 							}>
-							<div className="close-container">
-								<span
-									onClick={e => toggleMenu(e)}
-									className="material-icons">
-									highlight_off
-								</span>
-							</div>
-							<ul>
-								<li>
-									<button>Länk</button>
-								</li>
-							</ul>
+							<nav className="slide-nav">
+								<div
+									className={
+										menuToggle ? 'inner open' : 'inner'
+									}>
+									<div className="close-container">
+										<span
+											onClick={e => toggleMenu(e)}
+											className="material-icons">
+											highlight_off
+										</span>
+									</div>
+									<ul>
+										<li>
+											<button>Länk</button>
+										</li>
+									</ul>
+								</div>
+							</nav>
 						</div>
-					</nav>
-				</div>
-				<main>
-					<textarea
-						name=""
-						id={`textruta-${props.id}`}
-						placeholder=" Write something"
-						onFocus={() => setEnlargeTodo(true)}
-						onBlur={() => {
-							setEnlargeTodo(false);
-							setHoverTodo(false);
-						}}
-						onChange={e =>
-							setTodoText({
-								...todoText,
-								text: e.target.value,
-								todoId: props.id
-							})}
-					/>
-				</main>
-				<footer className="footer-todo">
-					<nav className="icons">
-						<span
-							onClick={e => saveTodo(e)}
-							className="material-icons">
-							save
-						</span>
-						<span
-							onClick={props.newTodo}
-							className="material-icons">
-							add_circle_outline
-						</span>
-						<span
-							onClick={e => getStuffToFirebase(e)}
-							className="material-icons">
-							backup
-						</span>
-						<span className="material-icons">
-							delete_forever
-						</span>
-						<span className="material-icons">lock</span>
-					</nav>
-					<h4>Jakob</h4>
-				</footer>
-			</animated.div>
-		</animated.article>
+						<main>
+							<textarea
+								name=""
+								id={`textruta-${props.id}`}
+								placeholder=" Write something"
+								onFocus={() => setEnlargeTodo(true)}
+								onBlur={() => {
+									setEnlargeTodo(false);
+									setHoverTodo(false);
+								}}
+								onChange={e =>
+									setTodoText({
+										...todoText,
+										text: e.target.value,
+										todoId: props.id
+									})}
+							/>
+						</main>
+						<footer className="footer-todo">
+							<nav className="icons">
+								<span
+									onClick={e => saveTodo(e)}
+									className="material-icons">
+									save
+								</span>
+								<span
+									onClick={props.newTodo}
+									className="material-icons">
+									add_circle_outline
+								</span>
+								<span
+									onClick={e => getStuffToFirebase(e)}
+									className="material-icons">
+									backup
+								</span>
+								<span className="material-icons">
+									delete_forever
+								</span>
+								<span className="material-icons">
+									lock
+								</span>
+							</nav>
+							<h4>Jakob</h4>
+						</footer>
+					</animated.div>
+				</animated.article>
+			</Fade>
+		</div>
 	);
 };
 
@@ -268,4 +268,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(Todo);
+// export default connect(null, mapDispatchToProps)(Todo);

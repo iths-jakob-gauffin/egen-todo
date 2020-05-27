@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './Todo.scss';
 
@@ -9,7 +9,7 @@ import { somethingAsync } from '../actions/somethingAsync';
 import { useSpring, animated, config } from 'react-spring';
 
 const EditTodo = props => {
-	console.log('EDITTODO OUTPUT ÄR: props', props.dataOfTodoToBeEdited);
+	// console.log('EDITTODO OUTPUT ÄR: props', props.dataOfTodoToBeEdited);
 
 	const [ menuToggle, setMenuToggle ] = useState(false);
 
@@ -20,8 +20,21 @@ const EditTodo = props => {
 	const [ todoText, setTodoText ] = useState({
 		title: 'No title',
 		text: 'No text',
-		todoId: 'x'
+		todoId: 'No todoId'
 	});
+	// console.log('OUTPUT ÄR: todoText', todoText);
+
+	useEffect(
+		() => {
+			return setTodoText({
+				text: props.dataOfTodoToBeEdited.text,
+				title: props.dataOfTodoToBeEdited.title,
+				id: props.dataOfTodoToBeEdited.id,
+				todoId: props.id
+			});
+		},
+		[ props.dataOfTodoToBeEdited ]
+	);
 
 	const saveTodo = () => {
 		let textInTodo = document.querySelector(`#textruta-${props.id}`)
@@ -144,7 +157,7 @@ const EditTodo = props => {
 								...todoText,
 								title: e.target.value
 							})}
-						value={props.dataOfTodoToBeEdited.title}
+						value={todoText.title}
 					/>
 					<nav>
 						<span
@@ -198,7 +211,7 @@ const EditTodo = props => {
 								text: e.target.value,
 								todoId: props.id
 							})}
-						value={props.dataOfTodoToBeEdited.text}
+						value={todoText.text}
 					/>
 				</main>
 				<footer className="footer-todo">

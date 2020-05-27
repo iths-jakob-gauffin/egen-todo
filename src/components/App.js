@@ -17,14 +17,14 @@ const App = props => {
 	const [ numberOfTodos, setNumberOfTodos ] = useState([ 1 ]);
 
 	const [ doEditTodoId, setDoEditTodoId ] = useState(false);
-	console.log('OUTPUT ÄR: props', props);
-	console.log('OUTPUT ÄR: doEditTodoId', doEditTodoId);
+	// console.log('OUTPUT ÄR: props', props);
+	// console.log('OUTPUT ÄR: doEditTodoId', doEditTodoId);
 	let editTodo = null;
 	if (doEditTodoId) {
 		editTodo = props.firestoreInApp.filter(
 			todo => todo.id === doEditTodoId
 		);
-		console.log('OUTPUT ÄR: editTodo', editTodo);
+		// console.log('OUTPUT ÄR: editTodo', editTodo);
 	}
 
 	const newTodo = () => {
@@ -52,7 +52,7 @@ const App = props => {
 };
 
 const mapStateToProps = state => {
-	console.log('OUTPUT ÄR: state', state);
+	// console.log('OUTPUT ÄR: state', state);
 	return {
 		stateInApp: state,
 		firestoreInApp: state.firestore.ordered.todotexter

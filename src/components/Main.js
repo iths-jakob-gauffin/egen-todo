@@ -9,8 +9,12 @@ import { saveText } from './../actions';
 import { firestoreConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
 
+import Fade from 'react-reveal/Fade';
+
 const Main = props => {
-	console.log('MAIN OUTPUT ÄR: props', props);
+	const [ temp, setTemp ] = useState(true);
+
+	// console.log('MAIN OUTPUT ÄR: props', props);
 	const updateRedux = text => {
 		props.saveText(text);
 	};
@@ -29,12 +33,16 @@ const Main = props => {
 				/>
 			))}
 			{props.editTodo ? (
-				<EditTodo
-					key={'edit'}
-					id={999}
-					updateRedux={updateRedux}
-					dataOfTodoToBeEdited={props.editTodo}
-				/>
+				<div>
+					<Fade top opposite when={temp}>
+						<EditTodo
+							key={'edit'}
+							id={'edit'}
+							updateRedux={updateRedux}
+							dataOfTodoToBeEdited={props.editTodo}
+						/>
+					</Fade>
+				</div>
 			) : null}
 		</main>
 	);
