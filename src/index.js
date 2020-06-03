@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 
 import reducers from './reducers';
 
-import App from './components/App';
+import App from './components/App.jsx';
 
 import {
 	reduxFirestore,

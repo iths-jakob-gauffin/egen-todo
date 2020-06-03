@@ -1,0 +1,30 @@
+@import "./../styles/colors.scss";
+
+.container-app .cut {
+	grid-area: 1 / 2 / 2 / 3;
+	margin-top: 2rem;
+	margin-right: 2rem;
+	overflow: hidden;
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+	aside {
+		background-color: $blue3Op;
+		height: 80%;
+		display: flex;
+		padding: 1rem;
+		justify-content: flex-start;
+		flex-direction: column;
+		transition: all .4s ease-in-out;
+		transform: translateX(0rem);
+		overflow-y: scroll;
+		scrollbar-width: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+	.overflow-hidden {
+		transform: translateX(7rem);
+	}
+}
