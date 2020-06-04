@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+//Styles
 import { css } from '@emotion/core';
 import { colors } from './../../styles/emotion/colors';
 import { animated } from 'react-spring';
@@ -7,15 +8,33 @@ import { animated } from 'react-spring';
 // Components
 import MaterialIcons from './../Icons/MaterialIcons';
 
-const TodoV2 = ({ style }) => {
-	const [ hoverSettings, setHoverSettings ] = useState(false);
-	console.log('OUTPUT ÄR: hoverSettings', hoverSettings);
-	// const hej = () => {
-	// 	console.log('nu då skickar jag med en callback');
-	// };
+//Redux
+import { connect } from 'react-redux';
+import { somethingAsync } from './../../actions/somethingAsync';
+
+const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
+	const [ todoText, setTodoText ] = useState({
+		title: 'No title',
+		text: 'No text',
+		todoId: 'x'
+	});
+
+	const saveTodo = () => {
+		let textInTodo = document.querySelector(`#textruta-${id}`).value;
+		const todoObj = {
+			textValue: textInTodo,
+			todoId: id
+		};
+		updateRedux(todoObj);
+	};
+	const getStuffToFirebase = e => {
+		somethingAsync(todoText);
+		return;
+	};
 
 	return (
 		<animated.article
+			id={id}
 			style={style}
 			css={css`
 				width: 450px;
@@ -26,7 +45,7 @@ const TodoV2 = ({ style }) => {
 				-webkit-box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.24);
 				-moz-box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.24);
 				box-shadow: 10px 10px 24px -7px rgba(0, 0, 0, 0.24);
-				/* padding: 1rem 1.5rem; */
+				margin: 1rem;
 			`}>
 			<header
 				css={css`
@@ -51,6 +70,11 @@ const TodoV2 = ({ style }) => {
 						font-size: 2rem;
 					`}
 					placeholder="Rubrik"
+					onChange={e =>
+						setTodoText({
+							...todoText,
+							title: e.target.value
+						})}
 				/>
 				<div
 					className="spin-absolute"
@@ -80,16 +104,21 @@ const TodoV2 = ({ style }) => {
 						width: 100%;
 					`}
 					name=""
-					id=""
+					id={`textruta-${id}`}
 					cols="30"
 					rows="10"
 					placeholder="Skriv här"
+					onChange={e =>
+						setTodoText({
+							...todoText,
+							text: e.target.value,
+							todoId: id
+						})}
 				/>
 			</main>
 			<footer
 				css={css`
 					width: 100%;
-					/* height: 20%; */
 					display: flex;
 					background-color: ${colors.$blue3};
 					padding: 1.5rem 1.5rem;
@@ -101,12 +130,22 @@ const TodoV2 = ({ style }) => {
 						display: flex;
 						justify-content: space-between;
 					`}>
-					<MaterialIcons>save</MaterialIcons>
-					<MaterialIcons>add_circle_outline</MaterialIcons>
+					<MaterialIcons callback={getStuffToFirebase}>
+						save
+					</MaterialIcons>
+					<MaterialIcons callback={newTodo}>
+						add_circle_outline
+					</MaterialIcons>
 				</div>
 			</footer>
 		</animated.article>
 	);
 };
 
-export default TodoV2;
+const mapDispatchToProps = dispatch => {
+	return {
+		somethingAsync: something => dispatch(somethingAsync(something))
+	};
+};
+
+export default connect(null, mapDispatchToProps)(TodoV2);

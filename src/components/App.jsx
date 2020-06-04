@@ -26,7 +26,7 @@ const App = props => {
 		);
 		// console.log('OUTPUT ÄR: editTodo', editTodo);
 	}
-	const [ newT, setNewT ] = useState(false);
+	const [ newT, setNewT ] = useState(true);
 
 	const newTodo = () => {
 		let newTodo = { stuff: 'text o sånt' };

@@ -8,7 +8,7 @@ import Flip from 'react-reveal/Flip';
 class Header extends React.Component {
 	state = { test: true };
 	render() {
-		console.log('OUTPUT ÄR: Header -> test', this.state.test);
+		// console.log('OUTPUT ÄR: Header -> test', this.state.test);
 		return (
 			<header className="header-todo">
 				<button onClick={this.props.newTodo}>Ny todo</button>
