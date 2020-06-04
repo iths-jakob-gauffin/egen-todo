@@ -8,7 +8,7 @@ import { firestoreConnect } from 'react-redux-firebase';
 // Components
 import TodoThumb from './TodoThumb';
 
-const Footer = props => {
+const Footer = ({ setDoEditTodoId, firestoreStuff, setNewT, newT }) => {
 	const [ showThumbMenu, setShowThumbMenu ] = useState(false);
 	const [ content, setContent ] = useState(null);
 	// let containerForTodoThumb = useRef(null);
@@ -36,8 +36,8 @@ const Footer = props => {
 
 	useEffect(
 		() => {
-			if (props.firestoreStuff) {
-				let writeCopy = [ ...props.firestoreStuff ];
+			if (firestoreStuff) {
+				let writeCopy = [ ...firestoreStuff ];
 				let sortedTodoThumbLIst = writeCopy.sort(
 					(a, b) => b.createdAt - a.createdAt
 				);
@@ -50,7 +50,7 @@ const Footer = props => {
 							text={todo.text}
 							title={todo.title}
 							createdAt={todo.createdAt}
-							setDoEditTodoId={props.setDoEditTodoId}
+							setDoEditTodoId={setDoEditTodoId}
 						/>
 					);
 				});
@@ -60,7 +60,7 @@ const Footer = props => {
 			// console.log('OUTPUT ÄR: grej', grej);
 			// setContent(grej);
 		},
-		[ props.firestoreStuff ]
+		[ firestoreStuff ]
 	);
 
 	// setContent();
@@ -142,6 +142,7 @@ const Footer = props => {
 						)
 					}
 				/>
+				<button onClick={() => setNewT(!newT)}>sadas</button>
 				<ul className="ul-saved-todos">{todoList}</ul>
 			</footer>
 		</div>

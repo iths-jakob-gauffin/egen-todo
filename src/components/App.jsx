@@ -26,6 +26,7 @@ const App = props => {
 		);
 		// console.log('OUTPUT ÄR: editTodo', editTodo);
 	}
+	const [ newT, setNewT ] = useState(false);
 
 	const newTodo = () => {
 		let newTodo = { stuff: 'text o sånt' };
@@ -41,12 +42,17 @@ const App = props => {
 				newTodo={newTodo}
 			/>
 			<Main
+				newT={newT}
 				numberOfTodos={numberOfTodos}
 				setNumberOfTodos={setNumberOfTodos}
 				newTodo={newTodo}
 				editTodo={editTodo ? editTodo[0] : null}
 			/>
-			<Footer setDoEditTodoId={setDoEditTodoId} />
+			<Footer
+				setDoEditTodoId={setDoEditTodoId}
+				setNewT={setNewT}
+				newT={newT}
+			/>
 		</div>
 	);
 };
