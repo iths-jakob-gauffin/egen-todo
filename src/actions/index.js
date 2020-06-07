@@ -18,3 +18,10 @@ export const saveText = targetObj => {
 		payload: targetObj
 	};
 };
+
+export const newTodoAC = targetObj => {
+	return {
+		type: 'NEW_TODO',
+		payload: targetObj
+	};
+};

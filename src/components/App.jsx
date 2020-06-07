@@ -28,10 +28,10 @@ const App = props => {
 	}
 	const [ newT, setNewT ] = useState(true);
 
-	const newTodo = () => {
-		let newTodo = { stuff: 'text o sånt' };
-		setNumberOfTodos([ ...numberOfTodos, newTodo ]);
-	};
+	// const newTodo = () => {
+	// 	let newTodo = { stuff: 'text o sånt' };
+	// 	setNumberOfTodos([ ...numberOfTodos, newTodo ]);
+	// };
 
 	return (
 		// <Spring1 />
@@ -39,13 +39,13 @@ const App = props => {
 			<Header
 				setNumberOfTodos={setNumberOfTodos}
 				numberOfTodos={numberOfTodos}
-				newTodo={newTodo}
+				// newTodo={newTodo}
 			/>
 			<Main
 				newT={newT}
 				numberOfTodos={numberOfTodos}
 				setNumberOfTodos={setNumberOfTodos}
-				newTodo={newTodo}
+				// newTodo={newTodo}
 				editTodo={editTodo ? editTodo[0] : null}
 			/>
 			<Footer

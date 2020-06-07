@@ -9,9 +9,14 @@ import { firestoreConnect } from 'react-redux-firebase';
 import TodoThumb from './TodoThumb';
 // import moduleName from './Aside.jsx'
 
+import { useTrail, animated } from 'react-spring';
+
 const Aside = props => {
 	const [ showThumbMenu, setShowThumbMenu ] = useState(false);
 	const [ content, setContent ] = useState(null);
+
+	const [ toggle, setToggle ] = useState(true);
+	const [ tempAnimation, setTempAnimation ] = useState([]);
 	// let containerForTodoThumb = useRef(null);
 	let todoList = null;
 	let contentToTodoThumb = null;
@@ -35,6 +40,13 @@ const Aside = props => {
 	// 	}
 	// };
 
+	const trail = useTrail(tempAnimation.length, {
+		opacity: toggle ? 1 : 0,
+		from: {
+			opacity: 0
+		}
+	});
+	//////////////////////////////////////////////
 	useEffect(
 		() => {
 			if (props.firestoreStuff) {
@@ -42,7 +54,7 @@ const Aside = props => {
 				let sortedTodoThumbLIst = writeCopy.sort(
 					(a, b) => b.createdAt - a.createdAt
 				);
-				// console.log('OUTPUT ÄR: sorted', sortedTodoThumbLIst);
+				setTempAnimation(sortedTodoThumbLIst);
 				contentToTodoThumb = sortedTodoThumbLIst.map(todo => {
 					return (
 						<TodoThumb
@@ -57,13 +69,37 @@ const Aside = props => {
 				});
 				setContent(contentToTodoThumb);
 			}
-			// let grej = doCoolStuff();
-			// console.log('OUTPUT ÄR: grej', grej);
-			// setContent(grej);
 		},
 		[ props.firestoreStuff ]
 	);
 
+	/////////////////////////////////////////
+	useEffect(
+		() => {
+			if (props.firestoreStuff) {
+				let writeCopy = [ ...props.firestoreStuff ];
+				let sortedTodoThumbLIst = writeCopy.sort(
+					(a, b) => b.createdAt - a.createdAt
+				);
+				setTempAnimation(sortedTodoThumbLIst);
+				contentToTodoThumb = sortedTodoThumbLIst.map(todo => {
+					return (
+						<TodoThumb
+							key={todo.id}
+							id={todo.id}
+							text={todo.text}
+							title={todo.title}
+							createdAt={todo.createdAt}
+							setDoEditTodoId={props.setDoEditTodoId}
+						/>
+					);
+				});
+				setContent(contentToTodoThumb);
+			}
+		},
+		[ props.firestoreStuff ]
+	);
+	////////////////////////////////////////////////
 	// setContent();
 	// });
 

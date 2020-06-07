@@ -19,11 +19,38 @@ import { compose } from 'redux';
 import Fade from 'react-reveal/Fade';
 import { useTransition, animated, config } from 'react-spring';
 
-const Main = ({ saveText, editTodo, newT, newTodo, numberOfTodos }) => {
+const Main = ({
+	saveText,
+	editTodo,
+	newT,
+	// newTodo,
+	setNumberOfTodos,
+	numberOfTodos,
+	stateTodos
+}) => {
+	console.log('OUTPUT ÄR: stateTodos', stateTodos);
+	console.log('OUTPUT ÄR: numberOfTodos', numberOfTodos);
+
+	useEffect(
+		() => {
+			stateTodos.length > 0
+				? console.log('jepp')
+				: console.log('ingenting');
+		},
+		[ stateTodos ]
+	);
+	// console.log('OUTPUT ÄR: Main -> numberOfTodos', numberOfTodos);
+	// console.log('OUTPUT ÄR: Main -> newTodo', newTodo);
 	const [ temp, setTemp ] = useState(true);
 
 	const [ showEdit, setShowEdit ] = useState(false);
 	const [ showTodo, setShowTodo ] = useState(false);
+
+	const [ todoText, setTodoText ] = useState({
+		title: '',
+		text: '',
+		todoId: ''
+	});
 
 	useEffect(
 		() => {
@@ -43,8 +70,16 @@ const Main = ({ saveText, editTodo, newT, newTodo, numberOfTodos }) => {
 	);
 
 	const updateRedux = text => {
+		console.log('OUTPUT ÄR: text', text);
 		saveText(text);
 	};
+
+	let arr =
+		stateTodos.length > 0
+			? stateTodos
+			: [ { title: '', text: '', todoId: numberOfTodos.length } ];
+	console.log('OUTPUT ÄR: arr', arr);
+
 	const transitions = useTransition(showTodo, null, {
 		config: config.gentle,
 		from: {
@@ -99,31 +134,77 @@ const Main = ({ saveText, editTodo, newT, newTodo, numberOfTodos }) => {
 				grid-area: 2 / 1 / 3 / 2;
 				display: flex;
 				justify-content: center;
-				/* align-items: center; */
-				/* grid-template-columns: repeat(2, 1fr);
-				display: grid;
-				grid-template-rows: repeat(3, 1fr);
-				grid-column-gap: 0px;
-				grid-row-gap: 0px; */
+				flex-wrap: wrap;
 				overflow-x: hidden;
 				padding-bottom: 2rem;
 				padding-right: 2rem;
 				margin-left: 2rem;
 			`}>
+			{/* //////////////////////////////////// */}
 			{numberOfTodos.map((todo, idx) => {
+				console.log('OUTPUT ÄR: todo', todo);
+				console.log('StateTodo körs');
 				return transitions.map(
 					({ item, key, props }) =>
 						item && (
 							<TodoV2
+								text={todo.text}
+								title={todo.title}
+								todoId={todo.todoId}
 								key={key}
 								style={props}
 								id={idx}
 								updateRedux={updateRedux}
-								newTodo={newTodo}
+								setNumberOfTodos={setNumberOfTodos}
+								numberOfTodos={numberOfTodos}
+								todoText={todoText}
+								setTodoText={setTodoText}
 							/>
 						)
 				);
 			})}
+			{/* {stateTodos === [] ? (
+				stateTodos.map((todo, idx) => {
+					console.log('OUTPUT ÄR: todo', todo);
+					console.log('StateTodo körs');
+					return transitions.map(
+						({ item, key, props }) =>
+							item && (
+								<TodoV2
+									key={key}
+									style={props}
+									id={idx}
+									updateRedux={updateRedux}
+									setNumberOfTodos={setNumberOfTodos}
+									numberOfTodos={numberOfTodos}
+
+									// newTodo={newTodo}
+								/>
+							)
+					);
+				})
+			) : (
+				numberOfTodos.map((todo, idx) => {
+					console.log('Number of todos körs');
+					console.log('OUTPUT ÄR: todo', todo);
+					return transitions.map(
+						({ item, key, props }) =>
+							item && (
+								<TodoV2
+									key={key}
+									style={props}
+									id={idx}
+									updateRedux={updateRedux}
+									setNumberOfTodos={setNumberOfTodos}
+									numberOfTodos={numberOfTodos}
+
+									// newTodo={newTodo}
+								/>
+							)
+					);
+				})
+			)} */}
+			{/* /////////////////////////////// */}
 			{/* ); */}
 			{/* {numberOfTodos.map((todo, idx) => {
 				transitions.map(
@@ -167,9 +248,10 @@ const Main = ({ saveText, editTodo, newT, newTodo, numberOfTodos }) => {
 };
 
 const mapStateToProps = state => {
+	console.log('OUTPUT ÄR: state', state);
 	// console.log('OUTPUT ÄR: state', state);
 	return {
-		stateMain: state
+		stateTodos: state.todos
 		// firestoreInMain: state.firestore.ordered.todotexter
 	};
 };

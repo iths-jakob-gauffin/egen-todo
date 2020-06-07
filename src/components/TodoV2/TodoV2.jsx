@@ -11,26 +11,48 @@ import MaterialIcons from './../Icons/MaterialIcons';
 //Redux
 import { connect } from 'react-redux';
 import { somethingAsync } from './../../actions/somethingAsync';
+import { newTodoAC } from './../../actions';
 
-const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
-	const [ todoText, setTodoText ] = useState({
-		title: 'No title',
-		text: 'No text',
-		todoId: 'x'
-	});
+const TodoV2 = ({
+	style,
+	id,
+	updateRedux,
+	somethingAsync,
+	// newTodo,
+	newTodoAC,
+	numberOfTodos,
+	setNumberOfTodos,
+	text,
+	todoId,
+	title,
+	todoText,
+	setTodoText
+}) => {
+	const newTodo = e => {
+		setNumberOfTodos([ ...numberOfTodos, numberOfTodos.length + 1 ]);
+		updateRedux(todoText);
+	};
 
-	const saveTodo = () => {
-		let textInTodo = document.querySelector(`#textruta-${id}`).value;
-		const todoObj = {
-			textValue: textInTodo,
-			todoId: id
-		};
-		updateRedux(todoObj);
+	const createNewTodo = () => {
+		setNumberOfTodos([ ...numberOfTodos, numberOfTodos.length + 1 ]);
+		updateRedux(todoText);
 	};
-	const getStuffToFirebase = e => {
-		somethingAsync(todoText);
-		return;
+
+	const saveTodoInRedux = () => {
+		updateRedux(todoText);
 	};
+
+	const saveTodoInReduxAndFirebase = () => {
+		// let textInTodo = document.querySelector(`#textruta-${id}`).value;
+
+		updateRedux(todoText);
+		// Save stuff to firebase
+		// somethingAsync(todoText);
+	};
+	// const getStuffToFirebase = e => {
+	// 	somethingAsync(todoText);
+	// 	return;
+	// };
 
 	return (
 		<animated.article
@@ -69,11 +91,13 @@ const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
 						color: white;
 						font-size: 2rem;
 					`}
+					value={todoText.title}
 					placeholder="Rubrik"
 					onChange={e =>
 						setTodoText({
 							...todoText,
-							title: e.target.value
+							title: e.target.value,
+							todoId: id
 						})}
 				/>
 				<div
@@ -104,7 +128,8 @@ const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
 						width: 100%;
 					`}
 					name=""
-					id={`textruta-${id}`}
+					// id={`textruta-${id}`}
+					todoId={todoText.todoId}
 					cols="30"
 					rows="10"
 					placeholder="Skriv här"
@@ -114,6 +139,7 @@ const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
 							text: e.target.value,
 							todoId: id
 						})}
+					value={todoText.text}
 				/>
 			</main>
 			<footer
@@ -130,12 +156,15 @@ const TodoV2 = ({ style, id, updateRedux, somethingAsync, newTodo }) => {
 						display: flex;
 						justify-content: space-between;
 					`}>
-					<MaterialIcons callback={getStuffToFirebase}>
+					<MaterialIcons callback={saveTodoInReduxAndFirebase}>
 						save
 					</MaterialIcons>
-					<MaterialIcons callback={newTodo}>
+					<MaterialIcons callback={createNewTodo}>
 						add_circle_outline
 					</MaterialIcons>
+					{/* <MaterialIcons callback={newTodo}>
+						add_circle_outline
+					</MaterialIcons> */}
 				</div>
 			</footer>
 		</animated.article>
