@@ -23,35 +23,44 @@ const Main = ({
 	saveText,
 	editTodo,
 	newT,
-	// newTodo,
+
 	setNumberOfTodos,
 	numberOfTodos,
 	stateTodos
 }) => {
 	console.log('OUTPUT ÄR: stateTodos', stateTodos);
-	console.log('OUTPUT ÄR: numberOfTodos', numberOfTodos);
-
-	useEffect(
-		() => {
-			stateTodos.length > 0
-				? console.log('jepp')
-				: console.log('ingenting');
-		},
-		[ stateTodos ]
-	);
-	// console.log('OUTPUT ÄR: Main -> numberOfTodos', numberOfTodos);
-	// console.log('OUTPUT ÄR: Main -> newTodo', newTodo);
-	const [ temp, setTemp ] = useState(true);
+	// useEffect(
+	// 	() => {
+	// 		stateTodos.length > 0
+	// 			? console.log('jepp')
+	// 			: console.log('ingenting');
+	// 	},
+	// 	[ stateTodos ]
+	// );
 
 	const [ showEdit, setShowEdit ] = useState(false);
 	const [ showTodo, setShowTodo ] = useState(false);
 
-	const [ todoText, setTodoText ] = useState({
-		title: '',
-		text: '',
-		todoId: ''
-	});
+	// const [ objToRedux, setObjToRedux ] = useState({
+	// 	title: stateTodos.title,
+	// 	text: stateTodos.text,
+	// 	todoId: numberOfTodos[0]
+	// });
+	// console.log('OUTPUT ÄR: numberOfTodos', numberOfTodos);
+	// useEffect(
+	// 	() => {
+	// 		updateRedux(objToRedux);
+	// 	},
+	// 	[ objToRedux ]
+	// );
 
+	// const [ todoText, setTodoText ] = useState({
+	// 	title: '',
+	// 	text: '',
+	// 	todoId: 1
+	// });
+
+	// console.log('OUTPUT ÄR: stateTodos', stateTodos);
 	useEffect(
 		() => {
 			if (newT) {
@@ -69,16 +78,16 @@ const Main = ({
 		[ newT ]
 	);
 
-	const updateRedux = text => {
-		console.log('OUTPUT ÄR: text', text);
-		saveText(text);
+	const updateRedux = todoObj => {
+		// console.log('OUTPUT ÄR: todoObj', todoObj);
+
+		saveText(todoObj);
 	};
 
-	let arr =
-		stateTodos.length > 0
-			? stateTodos
-			: [ { title: '', text: '', todoId: numberOfTodos.length } ];
-	console.log('OUTPUT ÄR: arr', arr);
+	// let arrayOfTodos =
+	// 	stateTodos.length > 0
+	// 		? stateTodos
+	// 		: [ { title: '', text: '', todoId: 1 } ];
 
 	const transitions = useTransition(showTodo, null, {
 		config: config.gentle,
@@ -123,6 +132,10 @@ const Main = ({
 			delay: 3000
 		}
 	});
+	// console.log('HÄÄÄÄÄÄR', stateTodos.todoId);
+	// stateTodos.map(todo => {
+	// 	console.log('NUUUUU', todo.todoId);
+	// });
 
 	return (
 		<main
@@ -140,116 +153,47 @@ const Main = ({
 				padding-right: 2rem;
 				margin-left: 2rem;
 			`}>
-			{/* //////////////////////////////////// */}
-			{numberOfTodos.map((todo, idx) => {
-				console.log('OUTPUT ÄR: todo', todo);
-				console.log('StateTodo körs');
+			{/* // All state ligger i stateTodos, som kommer ifrån redux, här sparas allt som skrivs i todosen. Det är en controlled state som uppdaterar todosvärdena.  */}
+			{stateTodos.map((stateTodo, idx) => {
 				return transitions.map(
 					({ item, key, props }) =>
 						item && (
 							<TodoV2
-								text={todo.text}
-								title={todo.title}
-								todoId={todo.todoId}
 								key={key}
 								style={props}
-								id={idx}
+								todoId={stateTodo.todoId}
 								updateRedux={updateRedux}
 								setNumberOfTodos={setNumberOfTodos}
 								numberOfTodos={numberOfTodos}
-								todoText={todoText}
-								setTodoText={setTodoText}
+								todoText={stateTodo.text}
+								todoTitle={stateTodo.title}
+								// objToRedux={objToRedux}
+								// setObjToRedux={setObjToRedux}
+								// setTodoText={setTodoText}
 							/>
 						)
 				);
 			})}
-			{/* {stateTodos === [] ? (
-				stateTodos.map((todo, idx) => {
-					console.log('OUTPUT ÄR: todo', todo);
-					console.log('StateTodo körs');
-					return transitions.map(
-						({ item, key, props }) =>
-							item && (
-								<TodoV2
-									key={key}
-									style={props}
-									id={idx}
-									updateRedux={updateRedux}
-									setNumberOfTodos={setNumberOfTodos}
-									numberOfTodos={numberOfTodos}
-
-									// newTodo={newTodo}
-								/>
-							)
-					);
-				})
-			) : (
-				numberOfTodos.map((todo, idx) => {
-					console.log('Number of todos körs');
-					console.log('OUTPUT ÄR: todo', todo);
-					return transitions.map(
-						({ item, key, props }) =>
-							item && (
-								<TodoV2
-									key={key}
-									style={props}
-									id={idx}
-									updateRedux={updateRedux}
-									setNumberOfTodos={setNumberOfTodos}
-									numberOfTodos={numberOfTodos}
-
-									// newTodo={newTodo}
-								/>
-							)
-					);
-				})
-			)} */}
-			{/* /////////////////////////////// */}
-			{/* ); */}
-			{/* {numberOfTodos.map((todo, idx) => {
-				transitions.map(
-					({ item, key, props }) =>
-						item && (
-							<TodoV2
-								key={key}
-								style={props}
-								id={idx}
-								updateRedux={updateRedux}
-								newTodo={props.newTodo}
-							/>
-						)
-				);
-			})} */}
-			{/* // <Todo
-				// 	key={idx}
-				// 	id={idx}
-				// 	updateRedux={updateRedux}
-				// 	newTodo={props.newTodo}
-				// />
-			)} */}
 			{transitionsEditTodo.map(
 				({ item, key, props }) =>
 					item && <EditTodoV2 key={key} style={props} />
 			)}
-			{/* {editTodo ? (
-				<div>
-					<Fade top opposite when={temp}>
-						<EditTodo
-							key={'edit'}
-							id={'edit'}
-							updateRedux={updateRedux}
-							dataOfTodoToBeEdited={editTodo}
-						/>
-					</Fade>
-				</div>
-			) : null} */}
 		</main>
 	);
 };
 
 const mapStateToProps = state => {
-	console.log('OUTPUT ÄR: state', state);
-	// console.log('OUTPUT ÄR: state', state);
+	if (state.todos.length === 0) {
+		// state.todos = [...state.todos, title];
+		state.todos = [
+			{ ...state.todos, title: '', text: '', todoId: 1 }
+		];
+		// ];
+		return {
+			stateTodos: state.todos
+		};
+	}
+
 	return {
 		stateTodos: state.todos
 		// firestoreInMain: state.firestore.ordered.todotexter

@@ -5,23 +5,19 @@ export const updateNumbers = () => {
 	};
 };
 
-export const saveText = targetObj => {
-	console.log('OUTPUT ÄR: saveText -> targetObj', targetObj);
-	let obj = {
-		type: 'UPDATE_TEXT',
-		payload: targetObj
-	};
-	console.log(obj);
-
+export const saveText = todoObj => {
+	console.log('OUTPUT ÄR: saveText -> targetObj', todoObj);
 	return {
 		type: 'UPDATE_TEXT',
-		payload: targetObj
+		payload: todoObj
 	};
 };
 
-export const newTodoAC = targetObj => {
+export const newTodoAC = todoId => {
+	console.log('newTodoAC körs');
+
 	return {
 		type: 'NEW_TODO',
-		payload: targetObj
+		payload: { title: '', text: '', todoId: todoId }
 	};
 };

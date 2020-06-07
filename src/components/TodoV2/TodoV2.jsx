@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //Styles
 import { css } from '@emotion/core';
@@ -15,48 +15,64 @@ import { newTodoAC } from './../../actions';
 
 const TodoV2 = ({
 	style,
-	id,
+	todoId,
+	todoText,
+	todoTitle,
 	updateRedux,
 	somethingAsync,
 	// newTodo,
-	newTodoAC,
+
 	numberOfTodos,
 	setNumberOfTodos,
-	text,
-	todoId,
-	title,
-	todoText,
-	setTodoText
+	newTodoAC
+	// objToRedux,
+	// setObjToRedux
 }) => {
-	const newTodo = e => {
-		setNumberOfTodos([ ...numberOfTodos, numberOfTodos.length + 1 ]);
-		updateRedux(todoText);
-	};
+	console.log('OUTPUT ÄR: TODOID', todoId);
+	const [ objToRedux, setObjToRedux ] = useState({
+		title: todoTitle,
+		text: todoText,
+		todoId: todoId
+	});
+	console.log('OUTPUT ÄR: numberOfTodos', numberOfTodos);
+	useEffect(
+		() => {
+			updateRedux(objToRedux);
+		},
+		[ objToRedux ]
+	);
+
+	//Skicka todotext till redux
+
+	// const newTodo = e => {
+	// 	setNumberOfTodos([ ...numberOfTodos, numberOfTodos.length + 1 ]);
+	// 	updateRedux(todoText);
+	// };
 
 	const createNewTodo = () => {
 		setNumberOfTodos([ ...numberOfTodos, numberOfTodos.length + 1 ]);
-		updateRedux(todoText);
+
+		// updateRedux(todoText);
+
+		//Skicka med hur många todos som har gjorts hittills till actioncreatorn. number of todos är en array lik: [1,2,3,4 ] osv, ett index för varje todo
+
+		newTodoAC(numberOfTodos.length + 1);
 	};
 
 	const saveTodoInRedux = () => {
-		updateRedux(todoText);
+		// updateRedux(todoText);
 	};
 
 	const saveTodoInReduxAndFirebase = () => {
 		// let textInTodo = document.querySelector(`#textruta-${id}`).value;
-
-		updateRedux(todoText);
+		// updateRedux(todoText);
 		// Save stuff to firebase
 		// somethingAsync(todoText);
 	};
-	// const getStuffToFirebase = e => {
-	// 	somethingAsync(todoText);
-	// 	return;
-	// };
 
 	return (
 		<animated.article
-			id={id}
+			articleId={todoId}
 			style={style}
 			css={css`
 				width: 450px;
@@ -83,7 +99,7 @@ const TodoV2 = ({
 				<input
 					type="text"
 					name=""
-					id="rubrik"
+					// id="rubrik"
 					css={css`
 						width: 90%;
 						background: none;
@@ -91,13 +107,13 @@ const TodoV2 = ({
 						color: white;
 						font-size: 2rem;
 					`}
-					value={todoText.title}
+					todoId={todoId}
+					value={todoTitle}
 					placeholder="Rubrik"
 					onChange={e =>
-						setTodoText({
-							...todoText,
-							title: e.target.value,
-							todoId: id
+						setObjToRedux({
+							...objToRedux,
+							['title']: e.target.value
 						})}
 				/>
 				<div
@@ -117,7 +133,6 @@ const TodoV2 = ({
 				css={css`
 					width: 100%;
 					height: 60%;
-					/* display: flex; */
 					background-color: ${colors.$blue1};
 					padding: 1rem 1.5rem;
 				`}>
@@ -129,17 +144,17 @@ const TodoV2 = ({
 					`}
 					name=""
 					// id={`textruta-${id}`}
-					todoId={todoText.todoId}
+					// todoId={todoText.todoId}
+					todoId={todoId}
 					cols="30"
 					rows="10"
 					placeholder="Skriv här"
 					onChange={e =>
-						setTodoText({
-							...todoText,
-							text: e.target.value,
-							todoId: id
+						setObjToRedux({
+							...objToRedux,
+							['text']: e.target.value
 						})}
-					value={todoText.text}
+					value={todoText}
 				/>
 			</main>
 			<footer
@@ -162,9 +177,6 @@ const TodoV2 = ({
 					<MaterialIcons callback={createNewTodo}>
 						add_circle_outline
 					</MaterialIcons>
-					{/* <MaterialIcons callback={newTodo}>
-						add_circle_outline
-					</MaterialIcons> */}
 				</div>
 			</footer>
 		</animated.article>
@@ -177,4 +189,4 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(TodoV2);
+export default connect(null, { mapDispatchToProps, newTodoAC })(TodoV2);
